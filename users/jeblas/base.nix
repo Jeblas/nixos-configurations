@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 {
   users = {
-    mutableUsers = true;
+    mutableUsers = false;
     users.jeblas = {
       isNormalUser = true;
       description = "John";

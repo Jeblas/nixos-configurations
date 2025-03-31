@@ -37,6 +37,7 @@
           ./environments/plasma-desktop.nix
           ./users/jeblas/base.nix
           ./services/printing.nix
+          ./services/virtualization.nix
           { system.stateVersion = "23.11"; }
         ];
 
@@ -45,9 +46,11 @@
 
       rpi2 = nixpkgs.lib.nixosSystem {
         specialArgs = { nixpkgsSrc = nixpkgs; hostName = "rpi2"; };
-        system = "armv7l-hf-multiplatform";
+        system = "armv7l-linux";
         modules = [
           nixos-hardware.nixosModules.raspberry-pi-2
+          ./environments/base.nix
+          ./users/jeblas/base.nix
         ];
       };
 
@@ -56,6 +59,8 @@
         system = "aarch64-linux";
         modules = [
           nixos-hardware.nixosModules.raspberry-pi-5
+          ./enviroments/base.nix
+          ./users/jeblas/base.nix
         ];
       };
     };
