@@ -17,42 +17,37 @@
     PS1="\[\e[36m\]\u@\H\[\e[m\] | 📅 \d ⌚️ \A\n[\w]\$ "
   '';
 
-  # TODO
   fonts = {
     packages = with pkgs; [
-      # (nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ]; })
-      # nerdfonts.fira-code
-      # nerdfonts.droid-sans-mono
+      nerd-fonts.hack
       roboto
       roboto-mono
       noto-fonts-emoji
     ];
     enableDefaultPackages = true;
-    # fontconfig = {
-    #   enable = true;
-    #   antialias = true;
-    #   defaultFonts = {
-    #     serif = [ "Roboto" ];
-    #     sansSerif = [ "Roboto" ];
-    #     monospace = [ "Roboto Mono" ];
-    #     emoji = [ "Noto Color Emoji" "Noto Emoji" ];
-    #   };
-    #   hinting = {
-    #     enable = true;
-    #     style = "medium";
-    #   };
-    #   subpixel = {
-    #     rgba = "vrgb";
-    #     lcdfilter = "none";
-    #   };
-    # };
+    fontconfig = {
+      enable = true;
+      antialias = true;
+      defaultFonts = {
+        serif = [ "Hack" ];
+        sansSerif = [ "Hack" ];
+        emoji = [ "Noto Color Emoji" "Noto Emoji" ];
+      };
+      hinting = {
+        enable = true;
+        style = "medium";
+      };
+      subpixel = {
+        rgba = "vrgb";
+        lcdfilter = "none";
+      };
+    };
   };
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     htop
-    btop
     wget
     curl
     nnn
@@ -103,8 +98,11 @@
             vim-nix
             vim-go
             vim-javascript
+            haskell-vim
             typescript-vim
+            zig-vim
             vim-json
+            vim-toml
             vim-markdown
             vim-protobuf
             rust-vim

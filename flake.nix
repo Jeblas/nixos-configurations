@@ -18,9 +18,6 @@
   };
 
   outputs = { self, nixpkgs, nixos-hardware} :
-  let
-    # 
-  in
   {
     formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixpkgs-fmt;
     nixosConfigurations = {
@@ -34,7 +31,7 @@
           nixos-hardware.nixosModules.common-pc-ssd
           nixos-hardware.nixosModules.common-gpu-nvidia-nonprime
           ./machines/tigris/hardware-configuration.nix
-          ./environments/plasma-desktop.nix
+          ./environments/hyprland-desktop.nix
           ./users/jeblas/base.nix
           ./services/printing.nix
           ./services/virtualization.nix

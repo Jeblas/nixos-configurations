@@ -11,6 +11,7 @@
     xkb.variant = "";
   };
   services.displayManager.sddm.enable = true;
+  services.displayManager.sddm.theme = "sugar-dark";
 
   environment.systemPackages = with pkgs; [
     alacritty
@@ -21,16 +22,14 @@
     signal-desktop
     # discord
     mpv
+    feh
     #fprintd # Fingerprint reader support
+    libsForQt5.qt5.qtgraphicaleffects
+    sddm-sugar-dark
   ];
 
   # Fixes remote VSCode server and allows for VSCode extensions
   programs.nix-ld.enable = true;
-
-  nixpkgs.config.permittedInsecurePackages = [
-    "electron-24.8.6"
-    "electron-25.9.0"
-  ];
 
   # TODO
   # programs.dconf.enable = true;

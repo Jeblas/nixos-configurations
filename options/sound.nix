@@ -6,7 +6,6 @@
     alsa.support32Bit = true;
     pulse.enable = true;
   };
-
   services.pulseaudio.configFile = pkgs.writeText "default.pa" ''
     load-module module-combine-sink
     # Bluetooth
