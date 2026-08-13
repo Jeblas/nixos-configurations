@@ -10,8 +10,17 @@
     xkb.layout = "us";
     xkb.variant = "";
   };
-  services.displayManager.sddm.enable = true;
-  services.displayManager.sddm.theme = "sugar-dark";
+  # services.displayManager.sddm = {
+  #   enable = false;
+  #   theme = "sddm-astronaut-theme";
+  #   extraPackages = with pkgs; [ 
+  #     sddm-astronaut 
+  #   ];
+  #   settings.General.RememberLastSession = false;
+  # };
+  
+  # services.displayManager.sddm.wayland.enable = false;
+  # security.polkit.enable = true;
 
   environment.systemPackages = with pkgs; [
     alacritty
@@ -24,8 +33,8 @@
     mpv
     feh
     #fprintd # Fingerprint reader support
-    libsForQt5.qt5.qtgraphicaleffects
-    sddm-sugar-dark
+    # sddm-astronaut
+    opencode
   ];
 
   # Fixes remote VSCode server and allows for VSCode extensions

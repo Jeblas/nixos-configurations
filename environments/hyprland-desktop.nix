@@ -1,11 +1,29 @@
-{config, pkgs, ...} :
+{ config, pkgs, ... }:
 {
   imports = [
     ./desktop.nix
   ];
 
-  programs.hyprland.enable = true;
-  programs.hyprland.xwayland.enable = true;
+  programs.hyprland = {
+    enable = true;
+    xwayland.enable = true;
+  };
+  
+  services.displayManager.sddm.enable = false;
+  services.greetd = {
+    enable = true;
+    # package = pkgs.tuigreet;
+    useTextGreeter = true;
+    settings = {
+      default_session = {
+        # command = "${pkgs.greetd}/bin/agreety --cmd ${pkgs.hyprland}/bin/start-hyprland";
+        # command = "${pkgs.tuigreet}/bin/tuigreet --cmd ${pkgs.hyprland}/bin/start-hyprland";
+        command = "${pkgs.hyprland}/bin/start-hyprland";
+        user = "jeblas";
+      };
+    };
+  };
+
   environment.systemPackages = [
     pkgs.kitty # required for the default Hyprland config
     pkgs.wofi

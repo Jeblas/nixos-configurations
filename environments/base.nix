@@ -22,7 +22,7 @@
       nerd-fonts.hack
       roboto
       roboto-mono
-      noto-fonts-emoji
+      noto-fonts-color-emoji
     ];
     enableDefaultPackages = true;
     fontconfig = {
@@ -51,7 +51,6 @@
     wget
     curl
     nnn
-    neofetch
     tree
     simple-http-server
     p7zip

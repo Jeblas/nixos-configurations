@@ -9,7 +9,7 @@
     # set_network 0 psk "secret"
     # or set_network 0 key_mgmt NONE
     # enable_network 0
-    userControlled.enable = true;
+    userControlled = true;
     networks = {
     };
   };
