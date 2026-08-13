@@ -55,9 +55,22 @@
         specialArgs = { nixpkgsSrc = nixpkgs; hostName = "rpi5"; };
         system = "aarch64-linux";
         modules = [
+          "${nixpkgs}/nixos/modules/installer/sd-card/sd-image-aarch64.nix"
           nixos-hardware.nixosModules.raspberry-pi-5
-          ./enviroments/base.nix
+          ./environments/base.nix
           ./users/jeblas/base.nix
+
+          {
+            sdImage.compressImage = true;
+            boot.initrd.includeDefaultModules = false;
+  
+            # Ensure you still have the essentials to boot and see the screen
+            boot.initrd.availableKernelModules = [ 
+              "vc4" 
+              "pcie_brcmstb" # Critical for RPi5 PCIe/USB
+              "reset_raspberrypi" 
+            ];
+          }
         ];
       };
     };
