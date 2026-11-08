@@ -15,64 +15,71 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
-  };
-
-  outputs = { self, nixpkgs, nixos-hardware} :
-  {
-    formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixpkgs-fmt;
-    nixosConfigurations = {
-      tigris = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        specialArgs = { nixpkgsSrc = nixpkgs; hostName = "Tigris"; };
-
-        modules = [
-          nixos-hardware.nixosModules.common-pc
-          nixos-hardware.nixosModules.common-cpu-intel-cpu-only # Core i9-7900X, Skylake-X
-          nixos-hardware.nixosModules.common-pc-ssd
-          nixos-hardware.nixosModules.common-gpu-nvidia-nonprime
-          ./machines/tigris/hardware-configuration.nix
-          ./environments/hyprland-desktop.nix
-          ./users/jeblas/base.nix
-          ./services/printing.nix
-          ./services/virtualization.nix
-          { system.stateVersion = "23.11"; }
-        ];
-
-
-      };
-
-      rpi2 = nixpkgs.lib.nixosSystem {
-        specialArgs = { nixpkgsSrc = nixpkgs; hostName = "rpi2"; };
-        system = "armv7l-linux";
-        modules = [
-          nixos-hardware.nixosModules.raspberry-pi-2
-          ./environments/base.nix
-          ./users/jeblas/base.nix
-        ];
-      };
-
-      rpi5 = nixpkgs.lib.nixosSystem {
-        specialArgs = { nixpkgsSrc = nixpkgs; hostName = "rpi5"; };
-        system = "aarch64-linux";
-        modules = [
-          "${nixpkgs}/nixos/modules/installer/sd-card/sd-image-aarch64.nix"
-          nixos-hardware.nixosModules.raspberry-pi-5
-          ./environments/base.nix
-          ./users/jeblas/base.nix
-
-          {
-            sdImage.compressImage = true;
-            boot.initrd.includeDefaultModules = false;
-  
-            # Ensure you still have the essentials to boot and see the screen
-            boot.initrd.availableKernelModules = [ 
-              "vc4" 
-              "pcie_brcmstb" # Critical for RPi5 PCIe/USB
-              "reset_raspberrypi" 
-            ];
-          }
-        ];
-      };
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
+
+  outputs = { self, nixpkgs, nixos-hardware, home-manager }:
+    let
+      commonModules = [
+        home-manager.nixosModules.home-manager
+      ];
+    in
+    {
+      formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixpkgs-fmt;
+      nixosConfigurations = {
+        tigris = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          specialArgs = { nixpkgsSrc = nixpkgs; hostName = "Tigris"; };
+
+          modules = commonModules ++ [
+            nixos-hardware.nixosModules.common-pc
+            nixos-hardware.nixosModules.common-cpu-intel-cpu-only # Core i9-7900X, Skylake-X
+            nixos-hardware.nixosModules.common-pc-ssd
+            nixos-hardware.nixosModules.common-gpu-nvidia-nonprime
+            ./machines/tigris/hardware-configuration.nix
+            ./environments/hyprland-desktop.nix
+            ./users/jeblas/base.nix
+            ./services/printing.nix
+            ./services/virtualization.nix
+            { system.stateVersion = "23.11"; }
+          ];
+        };
+
+        rpi2 = nixpkgs.lib.nixosSystem {
+          specialArgs = { nixpkgsSrc = nixpkgs; hostName = "rpi2"; };
+          system = "armv7l-linux";
+          modules = commonModules ++ [
+            nixos-hardware.nixosModules.raspberry-pi-2
+            ./environments/base.nix
+            ./users/jeblas/base.nix
+          ];
+        };
+
+        rpi5 = nixpkgs.lib.nixosSystem {
+          specialArgs = { nixpkgsSrc = nixpkgs; hostName = "rpi5"; };
+          system = "aarch64-linux";
+          modules = commonModules ++ [
+            "${nixpkgs}/nixos/modules/installer/sd-card/sd-image-aarch64.nix"
+            nixos-hardware.nixosModules.raspberry-pi-5
+            ./environments/base.nix
+            ./users/jeblas/base.nix
+
+            {
+              sdImage.compressImage = true;
+              boot.initrd.includeDefaultModules = false;
+
+              # Ensure you still have the essentials to boot and see the screen
+              boot.initrd.availableKernelModules = [
+                "vc4"
+                "pcie_brcmstb" # Critical for RPi5 PCIe/USB
+                "reset_raspberrypi"
+              ];
+            }
+          ];
+        };
+      };
+    };
 }

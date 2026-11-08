@@ -4,6 +4,11 @@
     ./base.nix
     ../options/sound.nix
   ];
+
+  home-manager.users.jeblas.imports = [
+    ../home/desktop.nix
+  ];
+
   # Configure keymap in X11
   services.xserver = {
     enable = true;
@@ -18,7 +23,7 @@
   #   ];
   #   settings.General.RememberLastSession = false;
   # };
-  
+
   # services.displayManager.sddm.wayland.enable = false;
   # security.polkit.enable = true;
 

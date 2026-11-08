@@ -4,11 +4,15 @@
     ./desktop.nix
   ];
 
+  home-manager.users.jeblas.imports = [
+    ../home/hyprland.nix
+  ];
+
   programs.hyprland = {
     enable = true;
     xwayland.enable = true;
   };
-  
+
   services.displayManager.sddm.enable = false;
   services.greetd = {
     enable = true;

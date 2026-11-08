@@ -1,7 +1,11 @@
-{config, pkgs, ...} :
+{ config, pkgs, ... }:
 {
   imports = [
     ./desktop.nix
+  ];
+
+  home-manager.users.jeblas.imports = [
+    ../home/plasma.nix
   ];
 
   services.desktopManager.plasma6.enable = true;
