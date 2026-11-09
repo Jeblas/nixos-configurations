@@ -1,4 +1,11 @@
 { config, pkgs, lib, ... }:
+let
+  # Atlanta, Georgia (33.7490 N, 84.3880 W)
+  location = {
+    latitude = 33.7490;
+    longitude = -84.3880;
+  };
+in
 {
   # Applications from environments/hyprland-desktop.nix that support
   # declarative config. The compositor itself is still started system-wide.
@@ -268,6 +275,17 @@
       padding = "8";
       margin = "8";
     };
+  };
+
+  # Night mode / blue-light filter. Manual coordinates avoid needing geoclue.
+  services.gammastep = {
+    enable = true;
+    inherit (location) latitude longitude;
+    temperature = {
+      day = 6500;
+      night = 3500;
+    };
+    settings.general.adjustment-method = "wayland";
   };
 
   # The compositor already starts hyprpaper from hyprland.conf, so only manage
