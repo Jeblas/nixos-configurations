@@ -46,6 +46,19 @@
     profiles.default = {
       # Merge HM settings into the existing file instead of replacing it.
       mutableUserSettings = true;
+      extensions = with pkgs.vscode-extensions; [
+        mhutchie.git-graph
+        waderyan.gitblame
+        # Not packaged in nixpkgs yet, so fetch it from the marketplace.
+        (pkgs.vscode-utils.buildVscodeMarketplaceExtension {
+          mktplcRef = {
+            name = "opencode";
+            publisher = "sst-dev";
+            version = "1.0.0";
+            hash = "sha256-3eyBWrmkpIGzUeHqKXmWaIpEPZrALLIbfZtCPOMV4MQ=";
+          };
+        })
+      ];
       userSettings = {
         "editor.tabSize" = 2;
         "editor.formatOnSave" = true;
