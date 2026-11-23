@@ -10,15 +10,15 @@ in
   # Applications from environments/hyprland-desktop.nix that support
   # declarative config. The compositor itself is still started system-wide.
 
-  programs.kitty = {
+  # Regular/standard pointer for the Hyprland session: the Adwaita arrow
+  # (pairs with XCURSOR_THEME in hyprland.conf), for GTK apps and X11 clients.
+  home.pointerCursor = {
     enable = true;
-    settings = {
-      font_family = "Hack Nerd Font";
-      font_size = 11;
-      background_opacity = "0.95";
-      window_padding_width = 8;
-      confirm_os_window_close = 0;
-    };
+    name = "Adwaita";
+    package = pkgs.adwaita-icon-theme;
+    size = 28; # keep in sync with XCURSOR_SIZE in hyprland.conf
+    gtk.enable = true;
+    x11.enable = true;
   };
 
   programs.wofi = {
@@ -29,7 +29,7 @@ in
       width = 600;
       height = 400;
       location = "center";
-      allow_images = true;
+      allow_images = false;
       insensitive = true;
     };
     style = ''

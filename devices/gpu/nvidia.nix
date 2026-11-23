@@ -1,5 +1,9 @@
-{ config, lib, pkgs, ... }:
+# NVIDIA GPU layer. Requires `nixos-hardware` in specialArgs (see flake.nix).
+{ config, lib, pkgs, nixos-hardware, ... }:
 {
+  imports = [
+    nixos-hardware.nixosModules.common-gpu-nvidia-nonprime
+  ];
 
   # Make sure opengl is enabled
   hardware.graphics = {

@@ -1,6 +1,10 @@
-{ pkgs, config, ... }: {
+{ pkgs, config, lib, ... }: {
 
   networking = {
+    # DHCP for any interface without an explicit declaration below (moved
+    # from hardware-configuration.nix, where nixos-generate-config put it).
+    useDHCP = lib.mkDefault true;
+
     interfaces = {
       wlp3s0.useDHCP = true;
       eno1 = {
@@ -13,5 +17,5 @@
     };
   };
 
-  imports = [ ../../options/wireless.nix ];
+  imports = [ ../../settings/wireless.nix ];
 }

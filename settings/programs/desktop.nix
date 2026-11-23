@@ -47,6 +47,7 @@
       # Merge HM settings into the existing file instead of replacing it.
       mutableUserSettings = true;
       extensions = with pkgs.vscode-extensions; [
+        bbenoist.nix # Nix language support
         mhutchie.git-graph
         waderyan.gitblame
         # Not packaged in nixpkgs yet, so fetch it from the marketplace.
@@ -73,5 +74,10 @@
   programs.opencode = {
     enable = true;
     mutableSettings = true;
+    cli = {
+      theme = {
+        mode = "dark";
+      };
+    };
   };
 }

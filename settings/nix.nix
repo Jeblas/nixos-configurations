@@ -1,4 +1,4 @@
-{ nixpkgsSrc, pkgs, ... }:
+{ nixpkgsSrc, pkgs, config, ... }:
 {
   nix = {
     package = pkgs.nixVersions.latest;
@@ -8,7 +8,7 @@
     '';
 
     settings = {
-      trusted-users = [ "root" "@wheel" "jeblas" ];
+      trusted-users = [ "root" "@wheel" ] ++ config.hostUsers;
       sandbox = true;
       trusted-substituters = [
         "https://split.cachix.org"

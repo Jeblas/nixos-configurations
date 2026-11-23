@@ -1,8 +1,11 @@
 { config, pkgs, lib, ... }:
+let
+  # The registry entry for the user this profile belongs to; git identity
+  # (and any future per-user bits) come from users/default.nix.
+  registry = (import ../../users/default.nix).users;
+  me = builtins.head (builtins.filter (u: u.userName == config.home.username) registry);
+in
 {
-  # Keep this in sync with the release you first activated Home Manager with.
-  home.stateVersion = "26.11";
-
   programs.bash = {
     enable = true;
     historyControl = [ "ignoredups" "ignorespace" ];
@@ -29,8 +32,13 @@
   programs.git = {
     enable = true;
     settings = {
-      user.name = "John Blasco";
-      # TODO: set user.email here once you have one configured.
+      user = {
+        # Falls back to userName ("jeblas") unless fullName is set in
+        # users/default.nix.
+        name = me.fullName or me.userName;
+      } // lib.optionalAttrs (me.email != "") {
+        email = me.email;
+      };
       init.defaultBranch = "main";
       pull.rebase = false;
       core.editor = "nvim";
@@ -41,10 +49,6 @@
       ".DS_Store"
     ];
   };
-
-  # Git gives ~/.gitconfig precedence over $XDG_CONFIG_HOME/git/config.
-  # Keep the legacy path linked to the Home Manager-managed XDG config.
-  home.file.".gitconfig".source = config.xdg.configFile."git/config".source;
 
   programs.neovim = {
     enable = true;

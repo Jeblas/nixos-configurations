@@ -2,10 +2,9 @@
 {
   imports = [
     ./desktop.nix
-  ];
-
-  home-manager.users.jeblas.imports = [
-    ../home/hyprland.nix
+    # Extends home-manager/desktop.nix with packages/hyprland.nix and
+    # settings/programs/hyprland.nix.
+    ../home-manager/hyprland-desktop.nix
   ];
 
   programs.hyprland = {
@@ -23,13 +22,14 @@
         # command = "${pkgs.greetd}/bin/agreety --cmd ${pkgs.hyprland}/bin/start-hyprland";
         # command = "${pkgs.tuigreet}/bin/tuigreet --cmd ${pkgs.hyprland}/bin/start-hyprland";
         command = "${pkgs.hyprland}/bin/start-hyprland";
-        user = "jeblas";
+        # The primary user: first entry of the host's hostUsers.
+        user = builtins.head config.hostUsers;
       };
     };
   };
 
   environment.systemPackages = [
-    pkgs.kitty # required for the default Hyprland config
+    pkgs.kitty # alternative terminal; alacritty is $terminal in hyprland.conf
     pkgs.wofi
     pkgs.waybar
     pkgs.hyprpaper

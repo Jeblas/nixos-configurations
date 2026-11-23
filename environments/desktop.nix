@@ -2,11 +2,10 @@
 {
   imports = [
     ./base.nix
-    ../options/sound.nix
-  ];
-
-  home-manager.users.jeblas.imports = [
-    ../home/desktop.nix
+    ../settings/sound.nix
+    # Extends home-manager/base.nix with packages/desktop.nix in
+    # home.packages and settings/programs/desktop.nix for the primary user.
+    ../home-manager/desktop.nix
   ];
 
   # Configure keymap in X11
@@ -27,20 +26,11 @@
   # services.displayManager.sddm.wayland.enable = false;
   # security.polkit.enable = true;
 
-  environment.systemPackages = with pkgs; [
-    alacritty
-    brave
-    obsidian
-    spotify
-    vscode
-    signal-desktop
+  # environment.systemPackages = with pkgs; [
     # discord
-    mpv
-    feh
-    #fprintd # Fingerprint reader support
+    # fprintd # Fingerprint reader support
     # sddm-astronaut
-    opencode
-  ];
+  # ];
 
   # Fixes remote VSCode server and allows for VSCode extensions
   programs.nix-ld.enable = true;
